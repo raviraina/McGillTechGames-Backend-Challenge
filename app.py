@@ -32,7 +32,7 @@ def processQueryData():
     }
 
 # process post
-@app.route('/processPOSTdata/')
+@app.route('/processPOSTdata', methods=['POST'])
 def processPOSTdata():
     try:
         info = json.loads(request.data)
@@ -43,12 +43,12 @@ def processPOSTdata():
     for key in info:
         vals.append(info[key])
 
-    return {"values: f'{vals}'"}
+    return {'values': f"{vals}"}
 
 # get "database"/add to database
 @app.route('/data', methods=['GET', 'POST'])
 def data():
-    if flask.request.method == 'GET':
+    if request.method == 'GET':
         return str(database)
     else:
         try:
@@ -62,9 +62,10 @@ def data():
         return ('', 201)
 
 # delete from database
-@app.route('/data/<index>', methods=['DELETE']):
+@app.route('/data/<index>', methods=['DELETE'])
 def delete(index):
-    database.remove(index)
+    index = int(index)
+    del database[index]
     return ('', 200)
 
 
